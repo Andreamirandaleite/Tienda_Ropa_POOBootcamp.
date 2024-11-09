@@ -1,0 +1,10 @@
+Nombre	                Precio  Cantidad
+Camisa de Hombre	25.00	  50
+Pantalón de Hombre	30.00	  30
+Chaqueta de Hombre	55.00	  20
+Falda de Mujer	        28.00	  15
+Blusa de Mujer	        22.00	  40
+Vestido de Mujer	45.00	  10
+Zapatos de Hombre	60.00	  25
+Zapatos de Mujer	50.00	  20
+
