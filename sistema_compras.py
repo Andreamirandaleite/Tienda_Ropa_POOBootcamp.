@@ -17,6 +17,20 @@ class Producto:
     def mostrar_info(self):
         print(f"Producto: {self.nombre}, Precio: ${self.precio}, Stock: {self.__cantidad}")
 
+
+# Subclases de Producto para diferentes tipos de productos, aplicando herencia y polimorfismo
+class ProductoRopaHombre(Producto):
+    def mostrar_info(self):
+        # Polimorfismo: redefinir mostrar_info para incluir el tipo específico
+        print(f"[Ropa de Hombre] Producto: {self.nombre}, Precio: ${self.precio}, Stock: {self.get_cantidad()}")
+
+
+class ProductoRopaMujer(Producto):
+    def mostrar_info(self):
+        # Polimorfismo: redefinir mostrar_info para incluir el tipo específico
+        print(f"[Ropa de Mujer] Producto: {self.nombre}, Precio: ${self.precio}, Stock: {self.get_cantidad()}")
+
+
 # Clase Categoria (para organizar productos por tipo)
 class Categoria:
     def __init__(self, nombre):
@@ -30,6 +44,7 @@ class Categoria:
         print(f"\n--- Categoría: {self.nombre} ---")
         for producto in self.productos:
             producto.mostrar_info()
+
 
 # Clase Tienda (gestiona el inventario y el carrito de compras)
 class Tienda:
@@ -58,7 +73,8 @@ class Tienda:
         self.mostrar_carrito()
         self.carrito.clear()  # Limpia el carrito después de la compra
 
-# Función para leer productos desde el archivo de texto
+
+# Función para leer productos desde el archivo de texto y crear instancias de sus clases específicas
 def leer_productos(archivo):
     productos = []
     try:
@@ -68,13 +84,19 @@ def leer_productos(archivo):
                 datos = linea.strip().split('\t')
                 if len(datos) == 3:  # nombre, precio, cantidad
                     nombre, precio, cantidad = datos
-                    producto = Producto(nombre, precio, cantidad)
+                    if "Hombre" in nombre:
+                        producto = ProductoRopaHombre(nombre, precio, cantidad)
+                    elif "Mujer" in nombre:
+                        producto = ProductoRopaMujer(nombre, precio, cantidad)
+                    else:
+                        producto = Producto(nombre, precio, cantidad)
                     productos.append(producto)
     except FileNotFoundError:
         print(f"El archivo {archivo} no se encuentra.")
     except Exception as e:
         print(f"Ocurrió un error al leer el archivo: {e}")
     return productos
+
 
 # Ruta local del archivo
 nombre_archivo = 'C:/Users/andre/OneDrive/Desktop/BOOTCAMP/Sistema de Compras de Ropas con POO/lista de articulos.txt'
@@ -91,9 +113,9 @@ else:
     categoria_ropa_hombre = Categoria("Ropa de Hombre")
     categoria_ropa_mujer = Categoria("Ropa de Mujer")
     for producto in productos:
-        if "Hombre" in producto.nombre:
+        if isinstance(producto, ProductoRopaHombre):
             categoria_ropa_hombre.agregar_producto(producto)
-        elif "Mujer" in producto.nombre:
+        elif isinstance(producto, ProductoRopaMujer):
             categoria_ropa_mujer.agregar_producto(producto)
         tienda.inventario.append(producto)  # Agregar al inventario general
 
